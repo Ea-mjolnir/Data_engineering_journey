@@ -1,0 +1,30 @@
+{
+    "Rules": [
+        {
+            "Id": "Transition-silver-data",
+            "Status": "Enabled",
+            "Prefix": "",
+            "Transitions": [
+                {
+                    "Days": 30,
+                    "StorageClass": "STANDARD_IA"
+                },
+                {
+                    "Days": 90,
+                    "StorageClass": "GLACIER"
+                }
+            ],
+            "Expiration": {
+                "Days": 365
+            }
+        },
+        {
+            "Id": "Delete-old-logs",
+            "Status": "Enabled",
+            "Prefix": "_logs/",
+            "Expiration": {
+                "Days": 90
+            }
+        }
+    ]
+}
