@@ -1,0 +1,19 @@
+Bucket Name: ea-data-engineering-silver-dev-288528696055-20260302
+Layer: silver
+Layer Name: Silver (Cleansed)
+Account: Ea_Data_Engineering
+Account ID: 2885-2869-6055
+Created: 20260302
+Region: us-east-1
+Environment: dev
+Folder Structure:
+2026-03-02 18:22:24          0 _logs/
+2026-03-02 18:22:22          0 _meta/
+2026-03-02 18:22:40        196 _meta/README.txt
+2026-03-02 18:22:27          0 _quality/
+2026-03-02 18:22:25          0 _schemas/
+2026-03-02 18:22:28          0 cleaned/
+2026-03-02 18:22:33          0 conformed/
+2026-03-02 18:22:36          0 dimensions/
+2026-03-02 18:22:31          0 enriched/
+2026-03-02 18:22:38          0 facts/

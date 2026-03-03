@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Script to create requirements.txt for the project
+# Run this from INSIDE your week3_capstone folder
+
+echo "📦 Creating requirements.txt..."
+
+cat > requirements.txt << 'EOF'
+# Core dependencies
+boto3>=1.28.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Data processing
+pandas>=2.0.0
+pyarrow>=12.0.0
+
+# Database (if needed)
+psycopg2-binary>=2.9.6
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+
+# Code quality
+pylint>=2.17.0
+black>=23.7.0
+flake8>=6.1.0
+
+# Utilities
+python-dateutil>=2.8.2
+EOF
+
+echo "✅ requirements.txt created successfully!"
+echo "📂 Location: $(pwd)/requirements.txt"
+echo ""
+echo "Contents:"
+cat requirements.txt
