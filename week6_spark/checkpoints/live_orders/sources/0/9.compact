@@ -1,0 +1,11 @@
+v1
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_114729.csv","timestamp":1773485249687,"batchId":0}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115242.csv","timestamp":1773485562291,"batchId":1}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115504.csv","timestamp":1773485704223,"batchId":2}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115509.csv","timestamp":1773485709322,"batchId":3}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115514.csv","timestamp":1773485714360,"batchId":4}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115519.csv","timestamp":1773485719374,"batchId":5}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115524.csv","timestamp":1773485724378,"batchId":6}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115529.csv","timestamp":1773485729381,"batchId":7}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115534.csv","timestamp":1773485734388,"batchId":8}
+{"path":"file:///home/odinsbeard/Data_engineering_Journey/week6_spark/data/streaming/input/orders_20260314_115539.csv","timestamp":1773485739392,"batchId":9}

@@ -1,0 +1,113 @@
+=============================================================================
+ETL MAPPING: Staging → Warehouse
+=============================================================================
+Generated: Mi 4. Mär 18:36:29 CET 2026
+
+This document maps staging columns to warehouse columns for ETL development.
+Based on warehouse schema inspection.
+
+=============================================================================
+DIMENSION MAPPINGS
+=============================================================================
+
+1. staging_customers → dim_customer
+   ---------------------------------
+   Source (staging)              → Target (warehouse)
+   --------------------------------------------------
+   customer_id                   → customer_id
+   first_name                    → first_name
+   last_name                     → last_name
+   email                         → email
+   phone                         → phone
+   address_line1                 → address_line1
+   address_line2                 → address_line2
+   city                          → city
+   state                         → state
+   country                       → country
+   postal_code                   → postal_code
+   registration_date             → registration_date
+   customer_segment              → customer_segment
+   is_active                     → is_active
+   (metadata)                    → full_name (generated)
+   (metadata)                    → effective_date
+   (metadata)                    → end_date
+   (metadata)                    → is_current
+   (metadata)                    → source_system
+
+2. staging_products → dim_product
+   ------------------------------
+   product_id                    → product_id
+   product_name                  → product_name
+   product_description           → product_description
+   sku                           → sku
+   barcode                       → barcode
+   category                      → category
+   subcategory                   → subcategory
+   brand                         → brand
+   unit_price                    → unit_price
+   unit_cost                     → unit_cost
+   msrp                          → msrp
+   supplier_name                 → supplier_name
+   color                         → color
+   size                          → size
+   weight_kg                     → weight_kg
+   is_active                     → is_active
+   (metadata)                    → effective_date
+   (metadata)                    → end_date
+   (metadata)                    → is_current
+
+3. staging_stores → dim_store
+   --------------------------
+   store_id                      → store_id
+   store_name                    → store_name
+   store_type                    → store_type
+   address                       → address
+   city                          → city
+   state                         → state
+   country                       → country
+   postal_code                   → postal_code
+   latitude                      → latitude
+   longitude                     → longitude
+   region                        → region
+   district                      → district
+   square_footage                → square_footage
+   opening_date                  → opening_date
+   manager_name                  → manager_name
+   phone                         → phone
+   is_active                     → is_active
+
+4. staging_orders/items → fact_sales
+   ---------------------------------
+   staging_orders                → fact_sales
+   -----------------------------   -----------
+   order_id                      → order_id
+   order_date                    → date_key (via dim_date)
+   customer_id                   → customer_key (lookup)
+   store_id                      → store_key (lookup)
+   payment_method                → payment_key (lookup)
+   order_status                  → order_status
+   created_at                    → transaction_timestamp
+   
+   staging_order_items           → fact_sales
+   ------------------------        -----------
+   line_number                   → order_line_number
+   product_id                    → product_key (lookup)
+   quantity                      → quantity
+   unit_price                    → unit_price
+   discount_percent              → discount_percent
+   discount_amount               → discount_amount
+   tax_percent                   → tax_amount (calculated)
+   tax_amount                    → tax_amount
+   line_total                    → gross_revenue (calculated)
+
+=============================================================================
+NOTES FOR ETL DEVELOPMENT
+=============================================================================
+1. Always load dimensions BEFORE facts
+2. Use LOOKUPs to get surrogate keys
+3. Handle SCD Type 2 for customers and products
+4. Set default values for missing references
+5. Use batch_id for tracking ETL runs
+6. Implement error logging for failed records
+
+=============================================================================

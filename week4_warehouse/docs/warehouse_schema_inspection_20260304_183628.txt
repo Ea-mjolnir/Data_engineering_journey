@@ -1,0 +1,630 @@
+Border style is 2.
+Output format is wrapped.
+Pager usage is off.
++-----------------------------------+
+|        📋 WAREHOUSE TABLES        |
++-----------------------------------+
+| 1. ALL TABLES IN WAREHOUSE SCHEMA |
++-----------------------------------+
+(1 row)
+
++--------------------------+------------+
+|        table_name        | table_type |
++--------------------------+------------+
+| dim_customer             | BASE TABLE |
+| dim_date                 | BASE TABLE |
+| dim_payment              | BASE TABLE |
+| dim_product              | BASE TABLE |
+| dim_store                | BASE TABLE |
+| fact_daily_sales_summary | BASE TABLE |
+| fact_inventory           | BASE TABLE |
+| fact_sales               | BASE TABLE |
+| fact_table_metadata      | BASE TABLE |
+| v_sales_analysis         | VIEW       |
++--------------------------+------------+
+(10 rows)
+
++-------------------------------+
+|      📊 DIMENSION TABLES      |
++-------------------------------+
+| 2. DIMENSION TABLES STRUCTURE |
++-------------------------------+
+(1 row)
+
++------------------------------+
+|          table_name          |
++------------------------------+
+| 📅 dim_date - Date Dimension |
++------------------------------+
+(1 row)
+
++-----+------------------------+-----------------------------+-------------+-------------------+
+| pos |      column_name       |          data_type          | is_nullable |  column_default   |
++-----+------------------------+-----------------------------+-------------+-------------------+
+|   1 | date_id                | integer                     | NO          |                   |
+|   2 | date                   | date                        | NO          |                   |
+|   3 | day_of_month           | integer                     | NO          |                   |
+|   4 | day_of_week            | integer                     | NO          |                   |
+|   5 | day_name               | character varying           | NO          |                   |
+|   6 | day_of_year            | integer                     | NO          |                   |
+|   7 | week_of_year           | integer                     | NO          |                   |
+|   8 | week_start_date        | date                        | NO          |                   |
+|   9 | week_end_date          | date                        | NO          |                   |
+|  10 | month                  | integer                     | NO          |                   |
+|  11 | month_name             | character varying           | NO          |                   |
+|  12 | month_abbr             | character varying           | NO          |                   |
+|  13 | quarter                | integer                     | NO          |                   |
+|  14 | quarter_name           | character varying           | NO          |                   |
+|  15 | year                   | integer                     | NO          |                   |
+|  16 | fiscal_year            | integer                     | YES         |                   |
+|  17 | fiscal_quarter         | integer                     | YES         |                   |
+|  18 | is_weekend             | boolean                     | NO          |                   |
+|  19 | is_holiday             | boolean                     | YES         | false             |
+|  20 | holiday_name           | character varying           | YES         |                   |
+|  21 | is_last_day_of_month   | boolean                     | NO          |                   |
+|  22 | is_last_day_of_quarter | boolean                     | NO          |                   |
+|  23 | is_last_day_of_year    | boolean                     | NO          |                   |
+|  24 | created_at             | timestamp without time zone | YES         | CURRENT_TIMESTAMP |
++-----+------------------------+-----------------------------+-------------+-------------------+
+(24 rows)
+
++--------------------------------------+
+|              table_name              |
++--------------------------------------+
+| 👥 dim_customer - Customer Dimension |
++--------------------------------------+
+(1 row)
+
++-----+---------------------+-----------------------------+-------------+--------------------------------------------------------------+
+| pos |     column_name     |          data_type          | is_nullable |                        column_default                        |
++-----+---------------------+-----------------------------+-------------+--------------------------------------------------------------+
+|   1 | customer_key        | integer                     | NO          | nextval('warehouse.dim_customer_customer_key_seq'::regclass) |
+|   2 | customer_id         | integer                     | NO          |                                                              |
+|   3 | first_name          | character varying           | YES         |                                                              |
+|   4 | last_name           | character varying           | YES         |                                                              |
+|   5 | full_name           | character varying           | YES         |                                                              |
+|   6 | email               | character varying           | YES         |                                                              |
+|   7 | phone               | character varying           | YES         |                                                              |
+|   8 | address_line1       | character varying           | YES         |                                                              |
+|   9 | address_line2       | character varying           | YES         |                                                              |
+|  10 | city                | character varying           | YES         |                                                              |
+|  11 | state               | character varying           | YES         |                                                              |
+|  12 | country             | character varying           | YES         |                                                              |
+|  13 | postal_code         | character varying           | YES         |                                                              |
+|  14 | customer_segment    | character varying           | YES         |                                                              |
+|  15 | registration_date   | date                        | YES         |                                                              |
+|  16 | first_purchase_date | date                        | YES         |                                                              |
+|  17 | last_purchase_date  | date                        | YES         |                                                              |
+|  18 | is_active           | boolean                     | YES         | true                                                         |
+|  19 | effective_date      | date                        | NO          |                                                              |
+|  20 | end_date            | date                        | YES         |                                                              |
+|  21 | is_current          | boolean                     | YES         | true                                                         |
+|  22 | source_system       | character varying           | YES         |                                                              |
+|  23 | created_at          | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                            |
+|  24 | updated_at          | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                            |
++-----+---------------------+-----------------------------+-------------+--------------------------------------------------------------+
+(24 rows)
+
++------------------------------------+
+|             table_name             |
++------------------------------------+
+| 📦 dim_product - Product Dimension |
++------------------------------------+
+(1 row)
+
++-----+---------------------+-----------------------------+-------------+------------------------------------------------------------+
+| pos |     column_name     |          data_type          | is_nullable |                       column_default                       |
++-----+---------------------+-----------------------------+-------------+------------------------------------------------------------+
+|   1 | product_key         | integer                     | NO          | nextval('warehouse.dim_product_product_key_seq'::regclass) |
+|   2 | product_id          | integer                     | NO          |                                                            |
+|   3 | product_name        | character varying           | NO          |                                                            |
+|   4 | product_description | text                        | YES         |                                                            |
+|   5 | sku                 | character varying           | YES         |                                                            |
+|   6 | barcode             | character varying           | YES         |                                                            |
+|   7 | category            | character varying           | YES         |                                                            |
+|   8 | subcategory         | character varying           | YES         |                                                            |
+|   9 | brand               | character varying           | YES         |                                                            |
+|  10 | unit_cost           | numeric                     | YES         |                                                            |
+|  11 | unit_price          | numeric                     | YES         |                                                            |
+|  12 | msrp                | numeric                     | YES         |                                                            |
+|  13 | color               | character varying           | YES         |                                                            |
+|  14 | size                | character varying           | YES         |                                                            |
+|  15 | weight_kg           | numeric                     | YES         |                                                            |
+|  16 | supplier_name       | character varying           | YES         |                                                            |
+|  17 | is_active           | boolean                     | YES         | true                                                       |
+|  18 | discontinued_date   | date                        | YES         |                                                            |
+|  19 | effective_date      | date                        | NO          |                                                            |
+|  20 | end_date            | date                        | YES         |                                                            |
+|  21 | is_current          | boolean                     | YES         | true                                                       |
+|  22 | created_at          | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                          |
+|  23 | updated_at          | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                          |
++-----+---------------------+-----------------------------+-------------+------------------------------------------------------------+
+(23 rows)
+
++--------------------------------+
+|           table_name           |
++--------------------------------+
+| 🏪 dim_store - Store Dimension |
++--------------------------------+
+(1 row)
+
++-----+----------------+-----------------------------+-------------+--------------------------------------------------------+
+| pos |  column_name   |          data_type          | is_nullable |                     column_default                     |
++-----+----------------+-----------------------------+-------------+--------------------------------------------------------+
+|   1 | store_key      | integer                     | NO          | nextval('warehouse.dim_store_store_key_seq'::regclass) |
+|   2 | store_id       | integer                     | NO          |                                                        |
+|   3 | store_name     | character varying           | NO          |                                                        |
+|   4 | store_type     | character varying           | YES         |                                                        |
+|   5 | address        | character varying           | YES         |                                                        |
+|   6 | city           | character varying           | YES         |                                                        |
+|   7 | state          | character varying           | YES         |                                                        |
+|   8 | country        | character varying           | YES         |                                                        |
+|   9 | postal_code    | character varying           | YES         |                                                        |
+|  10 | latitude       | numeric                     | YES         |                                                        |
+|  11 | longitude      | numeric                     | YES         |                                                        |
+|  12 | region         | character varying           | YES         |                                                        |
+|  13 | district       | character varying           | YES         |                                                        |
+|  14 | square_footage | integer                     | YES         |                                                        |
+|  15 | opening_date   | date                        | YES         |                                                        |
+|  16 | manager_name   | character varying           | YES         |                                                        |
+|  17 | phone          | character varying           | YES         |                                                        |
+|  18 | is_active      | boolean                     | YES         | true                                                   |
+|  19 | created_at     | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                      |
+|  20 | updated_at     | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                      |
++-----+----------------+-----------------------------+-------------+--------------------------------------------------------+
+(20 rows)
+
++------------------------------------+
+|             table_name             |
++------------------------------------+
+| 💳 dim_payment - Payment Dimension |
++------------------------------------+
+(1 row)
+
++-----+--------------------+-----------------------------+-------------+------------------------------------------------------------+
+| pos |    column_name     |          data_type          | is_nullable |                       column_default                       |
++-----+--------------------+-----------------------------+-------------+------------------------------------------------------------+
+|   1 | payment_key        | integer                     | NO          | nextval('warehouse.dim_payment_payment_key_seq'::regclass) |
+|   2 | payment_method     | character varying           | NO          |                                                            |
+|   3 | payment_type       | character varying           | YES         |                                                            |
+|   4 | payment_category   | character varying           | YES         |                                                            |
+|   5 | processing_fee_pct | numeric                     | YES         |                                                            |
+|   6 | is_digital         | boolean                     | YES         | false                                                      |
+|   7 | created_at         | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                          |
++-----+--------------------+-----------------------------+-------------+------------------------------------------------------------+
+(7 rows)
+
++--------------------------+
+|      📈 FACT TABLES      |
++--------------------------+
+| 3. FACT TABLES STRUCTURE |
++--------------------------+
+(1 row)
+
++----------------------------+
+|         table_name         |
++----------------------------+
+| 💰 fact_sales - Sales Fact |
++----------------------------+
+(1 row)
+
++-----+-------------------+-----------------------------+-------------+--------------------------------------------------------+
+| pos |    column_name    |          data_type          | is_nullable |                     column_default                     |
++-----+-------------------+-----------------------------+-------------+--------------------------------------------------------+
+|   1 | sale_key          | bigint                      | NO          | nextval('warehouse.fact_sales_sale_key_seq'::regclass) |
+|   2 | order_id          | integer                     | NO          |                                                        |
+|   3 | order_line_number | integer                     | NO          |                                                        |
+|   4 | invoice_number    | character varying           | YES         |                                                        |
+|   5 | date_key          | integer                     | NO          |                                                        |
+|   6 | customer_key      | integer                     | NO          |                                                        |
+|   7 | product_key       | integer                     | NO          |                                                        |
+|   8 | store_key         | integer                     | YES         |                                                        |
+|   9 | payment_key       | integer                     | YES         |                                                        |
+|  10 | quantity          | integer                     | NO          |                                                        |
+|  11 | unit_price        | numeric                     | NO          |                                                        |
+|  12 | unit_cost         | numeric                     | NO          |                                                        |
+|  13 | discount_amount   | numeric                     | YES         | 0                                                      |
+|  14 | tax_amount        | numeric                     | YES         | 0                                                      |
+|  15 | shipping_amount   | numeric                     | YES         | 0                                                      |
+|  16 | gross_revenue     | numeric                     | YES         |                                                        |
+|  17 | net_revenue       | numeric                     | YES         |                                                        |
+|  18 | total_cost        | numeric                     | YES         |                                                        |
+|  19 | gross_profit      | numeric                     | YES         |                                                        |
+|  20 | profit_margin     | numeric                     | YES         |                                                        |
+|  21 | discount_percent  | numeric                     | YES         |                                                        |
+|  22 | order_status      | character varying           | YES         |                                                        |
+|  23 | transaction_type  | character varying           | YES         |                                                        |
+|  24 | return_reason     | character varying           | YES         |                                                        |
+|  25 | source_system     | character varying           | YES         | 'POS'::character varying                               |
+|  26 | batch_id          | integer                     | YES         |                                                        |
+|  27 | created_at        | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                      |
+|  28 | updated_at        | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                      |
++-----+-------------------+-----------------------------+-------------+--------------------------------------------------------+
+(28 rows)
+
++---------------------------------------------------+
+|                    table_name                     |
++---------------------------------------------------+
+| 📊 fact_daily_sales_summary - Daily Sales Summary |
++---------------------------------------------------+
+(1 row)
+
++-----+---------------------+-----------------------------+-------------+-------------------------------------------------------------------------+
+| pos |     column_name     |          data_type          | is_nullable |                             column_default                              |
++-----+---------------------+-----------------------------+-------------+-------------------------------------------------------------------------+
+|   1 | summary_key         | bigint                      | NO          | nextval('warehouse.fact_daily_sales_summary_summary_key_seq'::regclass) |
+|   2 | date_key            | integer                     | NO          |                                                                         |
+|   3 | store_key           | integer                     | YES         |                                                                         |
+|   4 | product_key         | integer                     | YES         |                                                                         |
+|   5 | total_orders        | integer                     | NO          |                                                                         |
+|   6 | total_line_items    | integer                     | NO          |                                                                         |
+|   7 | total_quantity      | integer                     | NO          |                                                                         |
+|   8 | total_customers     | integer                     | NO          |                                                                         |
+|   9 | new_customers       | integer                     | YES         | 0                                                                       |
+|  10 | total_gross_revenue | numeric                     | NO          |                                                                         |
+|  11 | total_net_revenue   | numeric                     | NO          |                                                                         |
+|  12 | total_discounts     | numeric                     | YES         | 0                                                                       |
+|  13 | total_tax           | numeric                     | YES         | 0                                                                       |
+|  14 | total_shipping      | numeric                     | YES         | 0                                                                       |
+|  15 | total_cost          | numeric                     | NO          |                                                                         |
+|  16 | total_profit        | numeric                     | NO          |                                                                         |
+|  17 | avg_order_value     | numeric                     | YES         |                                                                         |
+|  18 | avg_items_per_order | numeric                     | YES         |                                                                         |
+|  19 | profit_margin_pct   | numeric                     | YES         |                                                                         |
+|  20 | created_at          | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                                       |
++-----+---------------------+-----------------------------+-------------+-------------------------------------------------------------------------+
+(20 rows)
+
++------------------------------------+
+|             table_name             |
++------------------------------------+
+| 📦 fact_inventory - Inventory Fact |
++------------------------------------+
+(1 row)
+
++-----+-----------------------+-----------------------------+-------------+-----------------------------------------------------------------+
+| pos |      column_name      |          data_type          | is_nullable |                         column_default                          |
++-----+-----------------------+-----------------------------+-------------+-----------------------------------------------------------------+
+|   1 | inventory_key         | bigint                      | NO          | nextval('warehouse.fact_inventory_inventory_key_seq'::regclass) |
+|   2 | date_key              | integer                     | NO          |                                                                 |
+|   3 | product_key           | integer                     | NO          |                                                                 |
+|   4 | store_key             | integer                     | NO          |                                                                 |
+|   5 | quantity_on_hand      | integer                     | NO          |                                                                 |
+|   6 | quantity_reserved     | integer                     | YES         | 0                                                               |
+|   7 | quantity_available    | integer                     | YES         |                                                                 |
+|   8 | reorder_point         | integer                     | YES         |                                                                 |
+|   9 | reorder_quantity      | integer                     | YES         |                                                                 |
+|  10 | unit_cost             | numeric                     | NO          |                                                                 |
+|  11 | total_inventory_value | numeric                     | YES         |                                                                 |
+|  12 | days_on_hand          | integer                     | YES         |                                                                 |
+|  13 | turnover_rate         | numeric                     | YES         |                                                                 |
+|  14 | created_at            | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                               |
++-----+-----------------------+-----------------------------+-------------+-----------------------------------------------------------------+
+(14 rows)
+
++--------------------------------------------+
+|                 table_name                 |
++--------------------------------------------+
+| 📋 fact_table_metadata - Metadata Tracking |
++--------------------------------------------+
+(1 row)
+
++-----+--------------------------+-----------------------------+-------------+---------------------------------------------------------------------+
+| pos |       column_name        |          data_type          | is_nullable |                           column_default                            |
++-----+--------------------------+-----------------------------+-------------+---------------------------------------------------------------------+
+|   1 | metadata_key             | integer                     | NO          | nextval('warehouse.fact_table_metadata_metadata_key_seq'::regclass) |
+|   2 | table_name               | character varying           | NO          |                                                                     |
+|   3 | grain_description        | text                        | YES         |                                                                     |
+|   4 | row_count                | bigint                      | YES         |                                                                     |
+|   5 | min_date_key             | integer                     | YES         |                                                                     |
+|   6 | max_date_key             | integer                     | YES         |                                                                     |
+|   7 | last_refresh             | timestamp without time zone | YES         |                                                                     |
+|   8 | refresh_status           | character varying           | YES         |                                                                     |
+|   9 | refresh_duration_seconds | integer                     | YES         |                                                                     |
+|  10 | created_at               | timestamp without time zone | YES         | CURRENT_TIMESTAMP                                                   |
++-----+--------------------------+-----------------------------+-------------+---------------------------------------------------------------------+
+(10 rows)
+
++----------+
+| 👁️  VIEWS |
++----------+
+| 4. VIEWS |
++----------+
+(1 row)
+
++------------------+---------------------------------------------------------------------------------+
+|    view_name     |                                 view_definition                                 |
++------------------+---------------------------------------------------------------------------------+
+| v_sales_analysis |  SELECT d.date,                                                                +|
+|                  |     d.year,                                                                    +|
+|                  |     d.month_name,                                                              +|
+|                  |     d.quarter_name,                                                            +|
+|                  |     c.customer_id,                                                             +|
+|                  |     c.full_name AS customer_name,                                              +|
+|                  |     c.customer_segment,                                                        +|
+|                  |     p.product_id,                                                              +|
+|                  |     p.product_name,                                                            +|
+|                  |     p.category,                                                                +|
+|                  |     p.brand,                                                                   +|
+|                  |     s.store_name,                                                              +|
+|                  |     s.region,                                                                  +|
+|                  |     pm.payment_method,                                                         +|
+|                  |     fs.quantity,                                                               +|
+|                  |     fs.unit_price,                                                             +|
+|                  |     fs.discount_amount,                                                        +|
+|                  |     fs.gross_revenue,                                                          +|
+|                  |     fs.net_revenue,                                                            +|
+|                  |     fs.gross_profit,                                                           +|
+|                  |     fs.profit_margin,                                                          +|
+|                  |     fs.order_status,                                                           +|
+|                  |     fs.transaction_type                                                        +|
+|                  |    FROM (((((warehouse.fact_sales fs                                           +|
+|                  |      JOIN warehouse.dim_date d ON ((fs.date_key = d.date_id)))                 +|
+|                  |      JOIN warehouse.dim_customer c ON ((fs.customer_key = c.customer_key)))    +|
+|                  |      JOIN warehouse.dim_product p ON ((fs.product_key = p.product_key)))       +|
+|                  |      LEFT JOIN warehouse.dim_store s ON ((fs.store_key = s.store_key)))        +|
+|                  |      LEFT JOIN warehouse.dim_payment pm ON ((fs.payment_key = pm.payment_key)))+|
+|                  |   WHERE ((c.is_current = true) AND (p.is_current = true));                      |
++------------------+---------------------------------------------------------------------------------+
+(1 row)
+
++------------------------------+
+|       🔗 FOREIGN KEYS        |
++------------------------------+
+| 5. FOREIGN KEY RELATIONSHIPS |
++------------------------------+
+(1 row)
+
++--------------------------+--------------+--------------------+---------------------+
+|        table_name        | column_name  | foreign_table_name | foreign_column_name |
++--------------------------+--------------+--------------------+---------------------+
+| fact_daily_sales_summary | date_key     | dim_date           | date_id             |
+| fact_daily_sales_summary | product_key  | dim_product        | product_key         |
+| fact_daily_sales_summary | store_key    | dim_store          | store_key           |
+| fact_inventory           | store_key    | dim_store          | store_key           |
+| fact_inventory           | date_key     | dim_date           | date_id             |
+| fact_inventory           | product_key  | dim_product        | product_key         |
+| fact_sales               | product_key  | dim_product        | product_key         |
+| fact_sales               | customer_key | dim_customer       | customer_key        |
+| fact_sales               | date_key     | dim_date           | date_id             |
+| fact_sales               | payment_key  | dim_payment        | payment_key         |
+| fact_sales               | store_key    | dim_store          | store_key           |
++--------------------------+--------------+--------------------+---------------------+
+(11 rows)
+
++-----------------+
+| 🔑 PRIMARY KEYS |
++-----------------+
+| 6. PRIMARY KEYS |
++-----------------+
+(1 row)
+
++--------------------------+---------------+
+|        table_name        |  column_name  |
++--------------------------+---------------+
+| dim_customer             | customer_key  |
+| dim_date                 | date_id       |
+| dim_payment              | payment_key   |
+| dim_product              | product_key   |
+| dim_store                | store_key     |
+| fact_daily_sales_summary | summary_key   |
+| fact_inventory           | inventory_key |
+| fact_sales               | sale_key      |
+| fact_table_metadata      | metadata_key  |
++--------------------------+---------------+
+(9 rows)
+
++------------+
+| 📌 INDEXES |
++------------+
+| 7. INDEXES |
++------------+
+(1 row)
+
++--------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|        table_name        |                         index_name                          |                                                                           index_definition                                                                           |
++--------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| dim_customer             | dim_customer_pkey                                           | CREATE UNIQUE INDEX dim_customer_pkey ON warehouse.dim_customer USING btree (customer_key)                                                                           |
+| dim_customer             | idx_dim_customer_email                                      | CREATE INDEX idx_dim_customer_email ON warehouse.dim_customer USING btree (email)                                                                                    |
+| dim_customer             | idx_dim_customer_id                                         | CREATE INDEX idx_dim_customer_id ON warehouse.dim_customer USING btree (customer_id)                                                                                 |
+| dim_customer             | idx_dim_customer_is_current                                 | CREATE INDEX idx_dim_customer_is_current ON warehouse.dim_customer USING btree (is_current)                                                                          |
+| dim_customer             | idx_dim_customer_segment                                    | CREATE INDEX idx_dim_customer_segment ON warehouse.dim_customer USING btree (customer_segment)                                                                       |
+| dim_date                 | dim_date_date_key                                           | CREATE UNIQUE INDEX dim_date_date_key ON warehouse.dim_date USING btree (date)                                                                                       |
+| dim_date                 | dim_date_pkey                                               | CREATE UNIQUE INDEX dim_date_pkey ON warehouse.dim_date USING btree (date_id)                                                                                        |
+| dim_date                 | idx_dim_date_date                                           | CREATE INDEX idx_dim_date_date ON warehouse.dim_date USING btree (date)                                                                                              |
+| dim_date                 | idx_dim_date_quarter                                        | CREATE INDEX idx_dim_date_quarter ON warehouse.dim_date USING btree (year, quarter)                                                                                  |
+| dim_date                 | idx_dim_date_year_month                                     | CREATE INDEX idx_dim_date_year_month ON warehouse.dim_date USING btree (year, month)                                                                                 |
+| dim_payment              | dim_payment_payment_method_key                              | CREATE UNIQUE INDEX dim_payment_payment_method_key ON warehouse.dim_payment USING btree (payment_method)                                                             |
+| dim_payment              | dim_payment_pkey                                            | CREATE UNIQUE INDEX dim_payment_pkey ON warehouse.dim_payment USING btree (payment_key)                                                                              |
+| dim_product              | dim_product_pkey                                            | CREATE UNIQUE INDEX dim_product_pkey ON warehouse.dim_product USING btree (product_key)                                                                              |
+| dim_product              | idx_dim_product_brand                                       | CREATE INDEX idx_dim_product_brand ON warehouse.dim_product USING btree (brand)                                                                                      |
+| dim_product              | idx_dim_product_category                                    | CREATE INDEX idx_dim_product_category ON warehouse.dim_product USING btree (category)                                                                                |
+| dim_product              | idx_dim_product_id                                          | CREATE INDEX idx_dim_product_id ON warehouse.dim_product USING btree (product_id)                                                                                    |
+| dim_product              | idx_dim_product_is_current                                  | CREATE INDEX idx_dim_product_is_current ON warehouse.dim_product USING btree (is_current)                                                                            |
+| dim_store                | dim_store_pkey                                              | CREATE UNIQUE INDEX dim_store_pkey ON warehouse.dim_store USING btree (store_key)                                                                                    |
+| dim_store                | idx_dim_store_city                                          | CREATE INDEX idx_dim_store_city ON warehouse.dim_store USING btree (city)                                                                                            |
+| dim_store                | idx_dim_store_id                                            | CREATE INDEX idx_dim_store_id ON warehouse.dim_store USING btree (store_id)                                                                                          |
+| dim_store                | idx_dim_store_region                                        | CREATE INDEX idx_dim_store_region ON warehouse.dim_store USING btree (region)                                                                                        |
+| fact_daily_sales_summary | fact_daily_sales_summary_date_key_store_key_product_key_key | CREATE UNIQUE INDEX fact_daily_sales_summary_date_key_store_key_product_key_key ON warehouse.fact_daily_sales_summary USING btree (date_key, store_key, product_key) |
+| fact_daily_sales_summary | fact_daily_sales_summary_pkey                               | CREATE UNIQUE INDEX fact_daily_sales_summary_pkey ON warehouse.fact_daily_sales_summary USING btree (summary_key)                                                    |
+| fact_daily_sales_summary | idx_daily_summary_date                                      | CREATE INDEX idx_daily_summary_date ON warehouse.fact_daily_sales_summary USING btree (date_key)                                                                     |
+| fact_daily_sales_summary | idx_daily_summary_product                                   | CREATE INDEX idx_daily_summary_product ON warehouse.fact_daily_sales_summary USING btree (product_key)                                                               |
+| fact_daily_sales_summary | idx_daily_summary_store                                     | CREATE INDEX idx_daily_summary_store ON warehouse.fact_daily_sales_summary USING btree (store_key)                                                                   |
+| fact_inventory           | fact_inventory_date_key_product_key_store_key_key           | CREATE UNIQUE INDEX fact_inventory_date_key_product_key_store_key_key ON warehouse.fact_inventory USING btree (date_key, product_key, store_key)                     |
+| fact_inventory           | fact_inventory_pkey                                         | CREATE UNIQUE INDEX fact_inventory_pkey ON warehouse.fact_inventory USING btree (inventory_key)                                                                      |
+| fact_inventory           | idx_inventory_date                                          | CREATE INDEX idx_inventory_date ON warehouse.fact_inventory USING btree (date_key)                                                                                   |
+| fact_inventory           | idx_inventory_product                                       | CREATE INDEX idx_inventory_product ON warehouse.fact_inventory USING btree (product_key)                                                                             |
+| fact_inventory           | idx_inventory_store                                         | CREATE INDEX idx_inventory_store ON warehouse.fact_inventory USING btree (store_key)                                                                                 |
+| fact_sales               | fact_sales_pkey                                             | CREATE UNIQUE INDEX fact_sales_pkey ON warehouse.fact_sales USING btree (sale_key)                                                                                   |
+| fact_sales               | idx_fact_sales_batch                                        | CREATE INDEX idx_fact_sales_batch ON warehouse.fact_sales USING btree (batch_id)                                                                                     |
+| fact_sales               | idx_fact_sales_customer                                     | CREATE INDEX idx_fact_sales_customer ON warehouse.fact_sales USING btree (customer_key)                                                                              |
+| fact_sales               | idx_fact_sales_customer_product                             | CREATE INDEX idx_fact_sales_customer_product ON warehouse.fact_sales USING btree (customer_key, product_key)                                                         |
+| fact_sales               | idx_fact_sales_date                                         | CREATE INDEX idx_fact_sales_date ON warehouse.fact_sales USING btree (date_key)                                                                                      |
+| fact_sales               | idx_fact_sales_date_customer                                | CREATE INDEX idx_fact_sales_date_customer ON warehouse.fact_sales USING btree (date_key, customer_key)                                                               |
+| fact_sales               | idx_fact_sales_date_product                                 | CREATE INDEX idx_fact_sales_date_product ON warehouse.fact_sales USING btree (date_key, product_key)                                                                 |
+| fact_sales               | idx_fact_sales_date_store                                   | CREATE INDEX idx_fact_sales_date_store ON warehouse.fact_sales USING btree (date_key, store_key)                                                                     |
+| fact_sales               | idx_fact_sales_order                                        | CREATE INDEX idx_fact_sales_order ON warehouse.fact_sales USING btree (order_id)                                                                                     |
+| fact_sales               | idx_fact_sales_payment                                      | CREATE INDEX idx_fact_sales_payment ON warehouse.fact_sales USING btree (payment_key)                                                                                |
+| fact_sales               | idx_fact_sales_product                                      | CREATE INDEX idx_fact_sales_product ON warehouse.fact_sales USING btree (product_key)                                                                                |
+| fact_sales               | idx_fact_sales_status                                       | CREATE INDEX idx_fact_sales_status ON warehouse.fact_sales USING btree (order_status)                                                                                |
+| fact_sales               | idx_fact_sales_store                                        | CREATE INDEX idx_fact_sales_store ON warehouse.fact_sales USING btree (store_key)                                                                                    |
+| fact_table_metadata      | fact_table_metadata_pkey                                    | CREATE UNIQUE INDEX fact_table_metadata_pkey ON warehouse.fact_table_metadata USING btree (metadata_key)                                                             |
++--------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+(45 rows)
+
++------------------------+
+|     📊 DATA COUNTS     |
++------------------------+
+| 8. CURRENT DATA COUNTS |
++------------------------+
+(1 row)
+
++--------------------------+-----------+
+|        table_name        | row_count |
++--------------------------+-----------+
+| dim_customer             |         0 |
+| dim_date                 |      4018 |
+| dim_payment              |         8 |
+| dim_product              |         0 |
+| dim_store                |         0 |
+| fact_daily_sales_summary |         0 |
+| fact_inventory           |         0 |
+| fact_sales               |         0 |
+| fact_table_metadata      |         3 |
++--------------------------+-----------+
+(9 rows)
+
++--------------+
+| 🔢 SEQUENCES |
++--------------+
+| 9. SEQUENCES |
++--------------+
+(1 row)
+
++------------------------------------------+-----------+-------------+---------------+---------------------+-----------+
+|              sequence_name               | data_type | start_value | minimum_value |    maximum_value    | increment |
++------------------------------------------+-----------+-------------+---------------+---------------------+-----------+
+| dim_customer_customer_key_seq            | integer   | 1           | 1             | 2147483647          | 1         |
+| dim_product_product_key_seq              | integer   | 1           | 1             | 2147483647          | 1         |
+| dim_store_store_key_seq                  | integer   | 1           | 1             | 2147483647          | 1         |
+| dim_payment_payment_key_seq              | integer   | 1           | 1             | 2147483647          | 1         |
+| fact_sales_sale_key_seq                  | bigint    | 1           | 1             | 9223372036854775807 | 1         |
+| fact_daily_sales_summary_summary_key_seq | bigint    | 1           | 1             | 9223372036854775807 | 1         |
+| fact_inventory_inventory_key_seq         | bigint    | 1           | 1             | 9223372036854775807 | 1         |
+| fact_table_metadata_metadata_key_seq     | integer   | 1           | 1             | 2147483647          | 1         |
++------------------------------------------+-----------+-------------+---------------+---------------------+-----------+
+(8 rows)
+
++--------------------------+
+|        📋 SUMMARY        |
++--------------------------+
+| 10. COLUMN COUNT SUMMARY |
++--------------------------+
+(1 row)
+
++--------------------------+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|        table_name        | column_count |                                                                                                                                                                                       column_list                                                                                                                                                                                        |
++--------------------------+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| dim_customer             |           24 | customer_key, customer_id, first_name, last_name, full_name, email, phone, address_line1, address_line2, city, state, country, postal_code, customer_segment, registration_date, first_purchase_date, last_purchase_date, is_active, effective_date, end_date, is_current, source_system, created_at, updated_at                                                                         |
+| dim_date                 |           24 | date_id, date, day_of_month, day_of_week, day_name, day_of_year, week_of_year, week_start_date, week_end_date, month, month_name, month_abbr, quarter, quarter_name, year, fiscal_year, fiscal_quarter, is_weekend, is_holiday, holiday_name, is_last_day_of_month, is_last_day_of_quarter, is_last_day_of_year, created_at                                                              |
+| dim_payment              |            7 | payment_key, payment_method, payment_type, payment_category, processing_fee_pct, is_digital, created_at                                                                                                                                                                                                                                                                                  |
+| dim_product              |           23 | product_key, product_id, product_name, product_description, sku, barcode, category, subcategory, brand, unit_cost, unit_price, msrp, color, size, weight_kg, supplier_name, is_active, discontinued_date, effective_date, end_date, is_current, created_at, updated_at                                                                                                                   |
+| dim_store                |           20 | store_key, store_id, store_name, store_type, address, city, state, country, postal_code, latitude, longitude, region, district, square_footage, opening_date, manager_name, phone, is_active, created_at, updated_at                                                                                                                                                                     |
+| fact_daily_sales_summary |           20 | summary_key, date_key, store_key, product_key, total_orders, total_line_items, total_quantity, total_customers, new_customers, total_gross_revenue, total_net_revenue, total_discounts, total_tax, total_shipping, total_cost, total_profit, avg_order_value, avg_items_per_order, profit_margin_pct, created_at                                                                         |
+| fact_inventory           |           14 | inventory_key, date_key, product_key, store_key, quantity_on_hand, quantity_reserved, quantity_available, reorder_point, reorder_quantity, unit_cost, total_inventory_value, days_on_hand, turnover_rate, created_at                                                                                                                                                                     |
+| fact_sales               |           28 | sale_key, order_id, order_line_number, invoice_number, date_key, customer_key, product_key, store_key, payment_key, quantity, unit_price, unit_cost, discount_amount, tax_amount, shipping_amount, gross_revenue, net_revenue, total_cost, gross_profit, profit_margin, discount_percent, order_status, transaction_type, return_reason, source_system, batch_id, created_at, updated_at |
+| fact_table_metadata      |           10 | metadata_key, table_name, grain_description, row_count, min_date_key, max_date_key, last_refresh, refresh_status, refresh_duration_seconds, created_at                                                                                                                                                                                                                                   |
+| v_sales_analysis         |           23 | date, year, month_name, quarter_name, customer_id, customer_name, customer_segment, product_id, product_name, category, brand, store_name, region, payment_method, quantity, unit_price, discount_amount, gross_revenue, net_revenue, gross_profit, profit_margin, order_status, transaction_type                                                                                        |
++--------------------------+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+(10 rows)
+
++---------------------------------+
+|       ⚠️  REQUIRED FIELDS        |
++---------------------------------+
+| 11. REQUIRED COLUMNS (NOT NULL) |
++---------------------------------+
+(1 row)
+
++--------------------------+------------------------+-------------------+
+|        table_name        |      column_name       |     data_type     |
++--------------------------+------------------------+-------------------+
+| dim_customer             | customer_id            | integer           |
+| dim_customer             | effective_date         | date              |
+| dim_date                 | date_id                | integer           |
+| dim_date                 | date                   | date              |
+| dim_date                 | day_of_month           | integer           |
+| dim_date                 | day_of_week            | integer           |
+| dim_date                 | day_name               | character varying |
+| dim_date                 | day_of_year            | integer           |
+| dim_date                 | week_of_year           | integer           |
+| dim_date                 | week_start_date        | date              |
+| dim_date                 | week_end_date          | date              |
+| dim_date                 | month                  | integer           |
+| dim_date                 | month_name             | character varying |
+| dim_date                 | month_abbr             | character varying |
+| dim_date                 | quarter                | integer           |
+| dim_date                 | quarter_name           | character varying |
+| dim_date                 | year                   | integer           |
+| dim_date                 | is_weekend             | boolean           |
+| dim_date                 | is_last_day_of_month   | boolean           |
+| dim_date                 | is_last_day_of_quarter | boolean           |
+| dim_date                 | is_last_day_of_year    | boolean           |
+| dim_payment              | payment_method         | character varying |
+| dim_product              | product_id             | integer           |
+| dim_product              | product_name           | character varying |
+| dim_product              | effective_date         | date              |
+| dim_store                | store_id               | integer           |
+| dim_store                | store_name             | character varying |
+| fact_daily_sales_summary | date_key               | integer           |
+| fact_daily_sales_summary | total_orders           | integer           |
+| fact_daily_sales_summary | total_line_items       | integer           |
+| fact_daily_sales_summary | total_quantity         | integer           |
+| fact_daily_sales_summary | total_customers        | integer           |
+| fact_daily_sales_summary | total_gross_revenue    | numeric           |
+| fact_daily_sales_summary | total_net_revenue      | numeric           |
+| fact_daily_sales_summary | total_cost             | numeric           |
+| fact_daily_sales_summary | total_profit           | numeric           |
+| fact_inventory           | date_key               | integer           |
+| fact_inventory           | product_key            | integer           |
+| fact_inventory           | store_key              | integer           |
+| fact_inventory           | quantity_on_hand       | integer           |
+| fact_inventory           | unit_cost              | numeric           |
+| fact_sales               | order_id               | integer           |
+| fact_sales               | order_line_number      | integer           |
+| fact_sales               | date_key               | integer           |
+| fact_sales               | customer_key           | integer           |
+| fact_sales               | product_key            | integer           |
+| fact_sales               | quantity               | integer           |
+| fact_sales               | unit_price             | numeric           |
+| fact_sales               | unit_cost              | numeric           |
+| fact_table_metadata      | table_name             | character varying |
++--------------------------+------------------------+-------------------+
+(50 rows)
+
++-------------------------------------+
+|          🔄 MAPPING CHECK           |
++-------------------------------------+
+| 12. STAGING VS WAREHOUSE COMPARISON |
++-------------------------------------+
+(1 row)
+
++--------------------------+
+|      staging_status      |
++--------------------------+
+| ✅ Staging schema exists |
++--------------------------+
+(1 row)
+
++---------------------+
+|   staging_tables    |
++---------------------+
+| staging_customers   |
+| staging_error_log   |
+| staging_order_items |
+| staging_orders      |
+| staging_payments    |
+| staging_products    |
+| staging_stores      |
++---------------------+
+(7 rows)
+

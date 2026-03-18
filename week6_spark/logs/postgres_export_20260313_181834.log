@@ -1,0 +1,103 @@
+2026-03-13 18:20:01,079 - INFO - ======================================================================
+2026-03-13 18:20:01,081 - INFO - INITIALIZING SPARK SESSION
+2026-03-13 18:20:01,088 - INFO - ======================================================================
+2026-03-13 18:20:01,101 - INFO - ✅ Driver found: /home/odinsbeard/Data_engineering_Journey/week6_spark/jars/postgresql-42.7.1.jar
+2026-03-13 18:20:17,686 - INFO - ✅ Spark session created (version: 3.5.0)
+2026-03-13 18:20:17,687 - INFO - ======================================================================
+2026-03-13 18:20:17,695 - INFO - PARALLEL TABLE LOADING
+2026-03-13 18:20:17,696 - INFO - ======================================================================
+2026-03-13 18:20:17,697 - INFO - 🔄 Using 4 parallel connections
+2026-03-13 18:20:17,698 - INFO - 📋 Tables to load: customers, products, orders, order_items, sales_reps, customer_rep_assignment
+2026-03-13 18:20:17,703 - INFO - ⏳ Reading table: customers
+2026-03-13 18:20:17,721 - INFO - ⏳ Reading table: products
+2026-03-13 18:20:17,741 - INFO - ⏳ Reading table: orders
+2026-03-13 18:20:17,747 - INFO - ⏳ Reading table: order_items
+2026-03-13 18:20:31,618 - INFO - ✅ customers: 101 rows loaded in 13.91s
+2026-03-13 18:20:31,618 - INFO - ✅ products: 50 rows loaded in 13.90s
+2026-03-13 18:20:31,619 - INFO - ✅ order_items: 721 rows loaded in 13.87s
+2026-03-13 18:20:31,621 - INFO - ⏳ Reading table: sales_reps
+2026-03-13 18:20:31,621 - INFO - ✅ orders: 200 rows loaded in 13.88s
+2026-03-13 18:20:31,646 - INFO - ⏳ Reading table: customer_rep_assignment
+2026-03-13 18:20:34,622 - INFO - ✅ sales_reps: 10 rows loaded in 3.00s
+2026-03-13 18:20:34,693 - INFO - ✅ customer_rep_assignment: 100 rows loaded in 3.05s
+2026-03-13 18:20:34,712 - INFO - Closing down clientserver connection
+2026-03-13 18:20:34,713 - INFO - Closing down clientserver connection
+2026-03-13 18:20:34,713 - INFO - Closing down clientserver connection
+2026-03-13 18:20:34,713 - INFO - Closing down clientserver connection
+2026-03-13 18:20:34,782 - INFO - ======================================================================
+2026-03-13 18:20:34,786 - INFO - LOADING COMPLETE - SUMMARY
+2026-03-13 18:20:34,788 - INFO - ======================================================================
+2026-03-13 18:20:34,792 - INFO - ✅ Successful: 6/6 tables
+2026-03-13 18:20:34,795 - INFO - ❌ Failed: 0/6 tables
+2026-03-13 18:20:34,798 - INFO - 📊 Total rows loaded: 1,182
+2026-03-13 18:20:34,800 - INFO - ⏱️  Total time: 17.08 seconds
+2026-03-13 18:20:34,801 - INFO - 
+📈 Successful tables:
+2026-03-13 18:20:34,801 - INFO -   ✅ customers: 101 rows in 13.91s
+2026-03-13 18:20:34,810 - INFO -   ✅ products: 50 rows in 13.90s
+2026-03-13 18:20:34,818 - INFO -   ✅ orders: 200 rows in 13.88s
+2026-03-13 18:20:34,822 - INFO -   ✅ order_items: 721 rows in 13.87s
+2026-03-13 18:20:34,822 - INFO -   ✅ sales_reps: 10 rows in 3.00s
+2026-03-13 18:20:34,823 - INFO -   ✅ customer_rep_assignment: 100 rows in 3.05s
+2026-03-13 18:20:34,823 - INFO - ======================================================================
+2026-03-13 18:20:34,824 - INFO - VERIFYING LOADED DATA
+2026-03-13 18:20:34,825 - INFO - ======================================================================
+2026-03-13 18:20:36,659 - INFO - ✅ customers: 101 rows (verified)
+2026-03-13 18:20:37,200 - INFO - ✅ products: 50 rows (verified)
+2026-03-13 18:20:37,633 - INFO - ✅ orders: 200 rows (verified)
+2026-03-13 18:20:38,508 - INFO - ✅ order_items: 721 rows (verified)
+2026-03-13 18:20:39,174 - INFO - ✅ sales_reps: 10 rows (verified)
+2026-03-13 18:20:39,773 - INFO - ✅ customer_rep_assignment: 100 rows (verified)
+2026-03-13 18:20:39,781 - INFO - ======================================================================
+2026-03-13 18:20:39,795 - INFO - CREATING ENRICHED VIEWS
+2026-03-13 18:20:39,797 - INFO - ======================================================================
+2026-03-13 18:20:40,533 - ERROR - ❌ Failed to create enriched views: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `oi`.`price` cannot be resolved. Did you mean one of the following? [`p`.`price`, `c`.`city`, `c`.`phone`, `p`.`cost`, `c`.`email`].; line 17 pos 20;
+'CreateViewCommand `enriched_orders`, SELECT 
+                    o.order_id,
+                    o.order_date,
+                    o.status,
+                    c.customer_id,
+                    c.first_name,
+                    c.last_name,
+                    c.email,
+                    c.country,
+                    p.product_id,
+                    p.product_name,
+                    p.category,
+                    p.price as unit_price,
+                    oi.quantity,
+                    oi.price as sale_price,
+                    oi.quantity * oi.price as line_total
+                FROM orders o
+                JOIN customers c ON o.customer_id = c.customer_id
+                JOIN order_items oi ON o.order_id = oi.order_id
+                JOIN products p ON oi.product_id = p.product_id, false, true, LocalTempView, false
++- 'Project [order_id#2, order_date#21, status#24, customer_id#3, first_name#11, last_name#12, email#13, country#17, product_id#0, product_name#4, category#5, price#6 AS unit_price#212, quantity#27, 'oi.price AS sale_price#213, (quantity#27 * 'oi.price) AS line_total#214]
+   +- Join Inner, (product_id#26 = product_id#0)
+      :- Join Inner, (order_id#2 = order_id#23)
+      :  :- Join Inner, (customer_id#20 = customer_id#3)
+      :  :  :- SubqueryAlias o
+      :  :  :  +- SubqueryAlias orders
+      :  :  :     +- View (`orders`, [order_id#2,customer_id#20,order_date#21,total_amount#22,status#24,payment_method#25])
+      :  :  :        +- Relation [order_id#2,customer_id#20,order_date#21,total_amount#22,status#24,payment_method#25] JDBCRelation(orders) [numPartitions=1]
+      :  :  +- SubqueryAlias c
+      :  :     +- SubqueryAlias customers
+      :  :        +- View (`customers`, [customer_id#3,first_name#11,last_name#12,email#13,phone#14,city#15,state#16,country#17,registration_date#18,is_active#19])
+      :  :           +- Relation [customer_id#3,first_name#11,last_name#12,email#13,phone#14,city#15,state#16,country#17,registration_date#18,is_active#19] JDBCRelation(customers) [numPartitions=1]
+      :  +- SubqueryAlias oi
+      :     +- SubqueryAlias order_items
+      :        +- View (`order_items`, [order_item_id#1,order_id#23,product_id#26,quantity#27,unit_price#28,discount_percent#29])
+      :           +- Relation [order_item_id#1,order_id#23,product_id#26,quantity#27,unit_price#28,discount_percent#29] JDBCRelation(order_items) [numPartitions=1]
+      +- SubqueryAlias p
+         +- SubqueryAlias products
+            +- View (`products`, [product_id#0,product_name#4,category#5,price#6,cost#7,stock_quantity#8,supplier#9,created_date#10])
+               +- Relation [product_id#0,product_name#4,category#5,price#6,cost#7,stock_quantity#8,supplier#9,created_date#10] JDBCRelation(products) [numPartitions=1]
+
+2026-03-13 18:20:40,537 - INFO - ======================================================================
+2026-03-13 18:20:40,542 - INFO - PROGRAM COMPLETE
+2026-03-13 18:20:40,542 - INFO - ======================================================================
+2026-03-13 18:20:40,544 - INFO - ⏱️  Total program time: 39.46 seconds
+2026-03-13 18:20:40,545 - INFO - 📁 Output directory: /home/odinsbeard/Data_engineering_Journey/week6_spark/data/postgres_export
+2026-03-13 18:20:40,546 - INFO - 📝 Log file: /home/odinsbeard/Data_engineering_Journey/week6_spark/logs/postgres_export_20260313_181917.log
+2026-03-13 18:20:40,547 - INFO - ✅ ALL TABLES LOADED SUCCESSFULLY!
+2026-03-13 18:20:42,460 - INFO - ✅ Spark session stopped

@@ -1,0 +1,69 @@
+2026-03-13 23:42:01,368 - INFO - ======================================================================
+2026-03-13 23:42:01,376 - INFO - INITIALIZING SPARK SESSION
+2026-03-13 23:42:01,381 - INFO - ======================================================================
+2026-03-13 23:42:01,381 - INFO - ✅ Driver found: /home/odinsbeard/Data_engineering_Journey/week6_spark/jars/postgresql-42.7.1.jar
+2026-03-13 23:42:13,448 - INFO - ✅ Spark session created (version: 3.5.0)
+2026-03-13 23:42:13,450 - INFO - ======================================================================
+2026-03-13 23:42:13,454 - INFO - PARALLEL TABLE LOADING
+2026-03-13 23:42:13,456 - INFO - ======================================================================
+2026-03-13 23:42:13,457 - INFO - 🔄 Using 4 parallel connections
+2026-03-13 23:42:13,465 - INFO - 📋 Tables to load: customers, products, orders, order_items, sales_reps, customer_rep_assignment
+2026-03-13 23:42:13,466 - INFO - ⏳ Reading table: customers
+2026-03-13 23:42:13,467 - INFO - ⏳ Reading table: products
+2026-03-13 23:42:13,472 - INFO - ⏳ Reading table: orders
+2026-03-13 23:42:13,473 - INFO - ⏳ Reading table: order_items
+2026-03-13 23:42:28,994 - INFO - ✅ customers: 101 rows loaded in 15.53s
+2026-03-13 23:42:28,994 - INFO - ✅ orders: 200 rows loaded in 15.52s
+2026-03-13 23:42:28,997 - INFO - ✅ order_items: 721 rows loaded in 15.52s
+2026-03-13 23:42:28,997 - INFO - ✅ products: 50 rows loaded in 15.53s
+2026-03-13 23:42:28,999 - INFO - ⏳ Reading table: sales_reps
+2026-03-13 23:42:29,006 - INFO - ⏳ Reading table: customer_rep_assignment
+2026-03-13 23:42:30,642 - INFO - ✅ customer_rep_assignment: 100 rows loaded in 1.64s
+2026-03-13 23:42:30,791 - INFO - ✅ sales_reps: 10 rows loaded in 1.79s
+2026-03-13 23:42:30,807 - INFO - Closing down clientserver connection
+2026-03-13 23:42:30,829 - INFO - Closing down clientserver connection
+2026-03-13 23:42:30,846 - INFO - Closing down clientserver connection
+2026-03-13 23:42:30,840 - INFO - Closing down clientserver connection
+2026-03-13 23:42:30,873 - INFO - ======================================================================
+2026-03-13 23:42:30,875 - INFO - LOADING COMPLETE - SUMMARY
+2026-03-13 23:42:30,878 - INFO - ======================================================================
+2026-03-13 23:42:30,879 - INFO - ✅ Successful: 6/6 tables
+2026-03-13 23:42:30,880 - INFO - ❌ Failed: 0/6 tables
+2026-03-13 23:42:30,883 - INFO - 📊 Total rows loaded: 1,182
+2026-03-13 23:42:30,883 - INFO - ⏱️  Total time: 17.41 seconds
+2026-03-13 23:42:30,884 - INFO - 
+📈 Successful tables:
+2026-03-13 23:42:30,885 - INFO -   ✅ customers: 101 rows in 15.53s
+2026-03-13 23:42:30,887 - INFO -   ✅ order_items: 721 rows in 15.52s
+2026-03-13 23:42:30,887 - INFO -   ✅ orders: 200 rows in 15.52s
+2026-03-13 23:42:30,888 - INFO -   ✅ products: 50 rows in 15.53s
+2026-03-13 23:42:30,888 - INFO -   ✅ customer_rep_assignment: 100 rows in 1.64s
+2026-03-13 23:42:30,889 - INFO -   ✅ sales_reps: 10 rows in 1.79s
+2026-03-13 23:42:30,890 - INFO - ======================================================================
+2026-03-13 23:42:30,890 - INFO - VERIFYING LOADED DATA
+2026-03-13 23:42:30,891 - INFO - ======================================================================
+2026-03-13 23:42:31,565 - INFO - ✅ customers: 101 rows (verified)
+2026-03-13 23:42:32,161 - INFO - ✅ order_items: 721 rows (verified)
+2026-03-13 23:42:32,795 - INFO - ✅ orders: 200 rows (verified)
+2026-03-13 23:42:33,303 - INFO - ✅ products: 50 rows (verified)
+2026-03-13 23:42:33,931 - INFO - ✅ customer_rep_assignment: 100 rows (verified)
+2026-03-13 23:42:34,469 - INFO - ✅ sales_reps: 10 rows (verified)
+2026-03-13 23:42:34,475 - INFO - ======================================================================
+2026-03-13 23:42:34,488 - INFO - CREATING ENRICHED VIEWS
+2026-03-13 23:42:34,492 - INFO - ======================================================================
+2026-03-13 23:42:34,502 - INFO - 📋 Verifying column names...
+2026-03-13 23:42:34,565 - INFO - order_items columns: ['order_item_id', 'order_id', 'product_id', 'quantity', 'unit_price', 'discount_percent']
+2026-03-13 23:42:34,588 - INFO - products columns: ['product_id', 'product_name', 'category', 'price', 'cost', 'stock_quantity', 'supplier', 'created_date']
+2026-03-13 23:42:34,592 - INFO - Using 'unit_price' from order_items and 'price' from products
+2026-03-13 23:42:38,001 - INFO - ✅ Enriched view created with 721 rows
+2026-03-13 23:42:38,003 - INFO - 💾 Saved to: /home/odinsbeard/Data_engineering_Journey/week6_spark/data/postgres_export/enriched_orders
+2026-03-13 23:42:38,011 - INFO - 
+📊 Sample enriched data:
+2026-03-13 23:42:41,161 - INFO - ======================================================================
+2026-03-13 23:42:41,162 - INFO - PROGRAM COMPLETE
+2026-03-13 23:42:41,163 - INFO - ======================================================================
+2026-03-13 23:42:41,164 - INFO - ⏱️  Total program time: 39.79 seconds
+2026-03-13 23:42:41,167 - INFO - 📁 Output directory: /home/odinsbeard/Data_engineering_Journey/week6_spark/data/postgres_export
+2026-03-13 23:42:41,169 - INFO - 📝 Log file: /home/odinsbeard/Data_engineering_Journey/week6_spark/logs/postgres_export_20260313_234201.log
+2026-03-13 23:42:41,171 - INFO - ✅ ALL TABLES LOADED SUCCESSFULLY!
+2026-03-13 23:42:42,408 - INFO - ✅ Spark session stopped

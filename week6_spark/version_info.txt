@@ -1,0 +1,10 @@
+Spark Installation Details
+==========================
+Installation Date: Sa 7. Mär 19:42:01 CET 2026
+Spark Version: 3.5.0
+Hadoop Version: 3
+Java Version: openjdk version "11.0.30" 2026-01-20
+Python Version: Python 3.12.3
+PySpark Version: 3.5.0
+Installation Path: /home/odinsbeard/Data_engineering_Journey/week6_spark/spark
+Virtual Environment: /home/odinsbeard/Data_engineering_Journey/week6_spark/venv

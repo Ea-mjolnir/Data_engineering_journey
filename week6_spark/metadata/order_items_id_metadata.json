@@ -1,0 +1,14 @@
+{
+  "table": "order_items_id",
+  "last_load": "2026-03-14 09:56:04.993510",
+  "last_id": 721,
+  "last_timestamp": "2026-03-14 09:56:04.993510",
+  "row_count": 721,
+  "loads": [
+    {
+      "timestamp": "2026-03-14 09:56:04.993510",
+      "rows": 721,
+      "max_id": 721
+    }
+  ]
+}

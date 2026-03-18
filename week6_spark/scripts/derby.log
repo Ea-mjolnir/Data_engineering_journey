@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sun Mar 08 19:20:05 CET 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-019c-cead-869a-0000065fb800 
+on database directory /home/odinsbeard/Data_engineering_Journey/week6_spark/scripts/metastore_db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@5ffd2b27 
+Loaded from file:/home/odinsbeard/Data_engineering_Journey/week6_spark/spark/jars/derby-10.14.2.0.jar
+java.vendor=Ubuntu
+java.runtime.version=11.0.30+7-post-Ubuntu-1ubuntu124.04
+user.dir=/home/odinsbeard/Data_engineering_Journey/week6_spark/scripts
+os.name=Linux
+os.arch=amd64
+os.version=6.8.0-101-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

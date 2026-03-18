@@ -1,0 +1,5 @@
+customer:60000
+product:30000
+order:210000
+payment:199416
+store:350
